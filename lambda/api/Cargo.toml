@@ -12,7 +12,6 @@ tokio = { version = "1", features = ["full"] }
 poem-lambda = "1"
 serde = "1"
 serde_json = "1"
-# tracing-subscriber = { version ="0.3.9", features = ["env-filter"] }
 
 [[bin]]
 name = "bootstrap"

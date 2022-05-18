@@ -18,8 +18,6 @@ pub fn get_app() -> Route {
     if std::env::var_os("RUST_LOG").is_none() {
         std::env::set_var("RUST_LOG", "poem=debug");
     }
-    // tracing_subscriber::fmt::init();
-
     let api_service =
         OpenApiService::new(Api, "Hello World", "1.0").server("http://localhost:3000/api");
     let ui = api_service.swagger_ui();
