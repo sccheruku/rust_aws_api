@@ -1,3 +1,10 @@
+# Readme
+This example is designed to help developers deploy a REST API written in Rust and deployed to AWS ApiGateway as a [LambdaRestApi](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_apigateway.LambdaRestApi.html)
+
+### Technologies used:
+- [poem, poem_lambda, poem_openapi](https://github.com/poem-web/poem)
+- [AWS CDK](https://docs.aws.amazon.com/cdk/api/v2/)
+
 ## Build lambda zip 
 ```bash
 cd lambda/api
