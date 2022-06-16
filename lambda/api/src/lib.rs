@@ -1,7 +1,25 @@
-use poem::{ Route};
-use poem_openapi::{param::Query, payload::PlainText, OpenApi, OpenApiService};
+use poem::{Route, Result};
+use poem_openapi::{
+    param::Query,
+    payload::{Json, PlainText},
+    OpenApi, OpenApiService, ApiResponse,
+    Object
+};
 
 struct Api;
+
+#[derive(Object)]
+struct Person {
+    first_name: String,
+    last_name: String,
+    extra: Option<serde_json::Value>,
+}
+
+#[derive(ApiResponse)]
+enum GetResponse{
+    #[oai(status = 200)]
+    Person(Json<Person>)
+}
 
 #[OpenApi]
 impl Api {
@@ -11,6 +29,26 @@ impl Api {
             Some(name) => PlainText(format!("hello, {}!", name)),
             None => PlainText("hello!".to_string()),
         }
+    }
+
+    #[oai(path = "/person", method = "get")]
+    async fn person(&self, name: Query<Option<String>>) -> Result<GetResponse> {
+        // match name.0 {
+        //     Some(name) => PlainText(format!("hello, {}!", name)),
+        //     None => PlainText("hello!".to_string()),
+        // }
+        Ok(GetResponse::Person(Json(Person {
+            first_name: "hello".into(),
+            last_name: "last_name".into(),
+            extra: Some(serde_json::json!({
+                "extra_prop": "hello extra prop"
+            })),
+        })))
+    }
+
+    #[oai(path = "/person", method = "post")]
+    async fn post_person(&self, person: Json<Person>) -> PlainText<String> {
+        PlainText("hello!".to_string())
     }
 }
 
@@ -24,7 +62,6 @@ pub fn get_app() -> Route {
     Route::new().nest("/api", api_service).nest("/", ui)
 }
 
-
 // #[cfg(test)]
 // mod tests {
 //     #[test]
@@ -33,4 +70,3 @@ pub fn get_app() -> Route {
 //         assert_eq!(result, 4);
 //     }
 // }
-
